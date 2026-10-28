@@ -1,0 +1,9 @@
+[workspace]
+resolver = "2"
+members = ["crates/sim", "crates/period-controller", "crates/conformance", "crates/ledger-port"]
+
+[workspace.package]
+version = "0.0.1"
+edition = "2021"
+license = "UNLICENSED" # ADR 032 (licensing route) is still open
+publish = false
