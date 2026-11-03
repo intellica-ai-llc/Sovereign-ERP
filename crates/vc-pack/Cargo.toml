@@ -1,0 +1,18 @@
+[package]
+name = "vc-pack"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "VeriChain vc-pack: build evidence packs (C5) that vc-verify accepts"
+
+[dependencies]
+vc-core = { path = "../vc-core" }
+vc-cose = { path = "../vc-cose" }
+vc-log = { path = "../vc-log" }
+ed25519-dalek.workspace = true
+hex.workspace = true
+serde_json.workspace = true
+thiserror.workspace = true
+
+[dev-dependencies]
+vc-verify = { path = "../vc-verify" }

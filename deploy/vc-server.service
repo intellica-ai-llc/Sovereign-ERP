@@ -1,0 +1,23 @@
+# /etc/systemd/system/vc-server.service   (sudo systemctl enable --now vc-server)
+[Unit]
+Description=VeriChain server
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=vcsrv
+Group=vcsrv
+EnvironmentFile=/etc/vc-server.env
+ExecStart=/usr/local/bin/vc-server
+Restart=always
+RestartSec=3
+# hardening: the server needs only its data directory and outbound HTTPS
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+ReadWritePaths=/var/lib/vc-server
+MemoryMax=600M
+
+[Install]
+WantedBy=multi-user.target

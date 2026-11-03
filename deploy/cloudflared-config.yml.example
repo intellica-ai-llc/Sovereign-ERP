@@ -1,0 +1,7 @@
+# /etc/cloudflared/config.yml  (create the tunnel in the Cloudflare dashboard or with `cloudflared tunnel create`)
+tunnel: <TUNNEL-UUID>
+credentials-file: /etc/cloudflared/<TUNNEL-UUID>.json
+ingress:
+  - hostname: log.example.com
+    service: http://127.0.0.1:8080
+  - service: http_status:404

@@ -1,0 +1,18 @@
+[package]
+name = "vcd"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "VeriChain vcd: local evidence demo + dashboard (single binary); hosted log server comes later"
+
+[[bin]]
+name = "vcd"
+path = "src/main.rs"
+
+[dependencies]
+vc-cose = { path = "../vc-cose" }
+vc-pack = { path = "../vc-pack" }
+vc-verify = { path = "../vc-verify" }
+ed25519-dalek.workspace = true
+hex.workspace = true
+serde_json.workspace = true

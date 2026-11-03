@@ -1,0 +1,18 @@
+[package]
+name = "mas-data"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "MAS market data: Polymarket order-book and event parsing, tamper-evident recordings, replay scans"
+
+[[bin]]
+name = "mas-data"
+path = "src/main.rs"
+
+[dependencies]
+mas-research = { path = "../mas-research" }
+serde.workspace = true
+serde_json.workspace = true
+sha2.workspace = true
+hex.workspace = true
+ureq = "2"
