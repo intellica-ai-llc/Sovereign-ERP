@@ -69,3 +69,4 @@ Rule: company revenue never depends on MAS P&L (Addendum H).
 - Round 29: collector runs from the console (mas-data::runner, vc-server trading routes/panel); card no longer proves anything on an empty ledger.
 - Round 30: pilot hardening: failed-auth throttle, deploy/ (systemd, env, backup), PILOT_RUNBOOK and PILOT_GAPS.
 - Round 31: final pre-checkpoint hardening: RFC 3161 anchoring, admin audit log, /readyz, paper replay in console, verify-all.sh, DILIGENCE.md.
+- Round 32: MANIFEST.txt + scripts/prune-stale.sh so zip updates can also remove stale files.

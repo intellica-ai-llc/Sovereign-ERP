@@ -45,3 +45,7 @@ A paid domain is NOT needed (DuckDNS gives a free subdomain). Everything below i
   `openssl ts -verify -in reply.tsr -digest <digest_sha256> -CAfile cacert.pem -untrusted tsa.crt`.
 - FreeTSA states no rate limit or uptime guarantee: schedule anchoring at most hourly, and treat it as a bonus, not a dependency.
 - Admin audit log: `GET /admin/v1/audit` (admin token) shows operator actions and whether the chain is intact. Copy its head somewhere else after big changes.
+
+## Keeping the repo in step with the zips
+A zip adds and overwrites files; it cannot delete. `MANIFEST.txt` lists every file the current version contains, and
+`./scripts/prune-stale.sh` shows (dry run) or removes (`--apply`) tracked files that are not in it. Run it after unzipping.
