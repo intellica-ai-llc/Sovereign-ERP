@@ -1,0 +1,8 @@
+/target
+/.tools
+**/*.rs.bk
+*.swp
+.DS_Store
+# TLC scratch files, should it ever be run by hand in formal/tla
+/formal/tla/states/
+/dist

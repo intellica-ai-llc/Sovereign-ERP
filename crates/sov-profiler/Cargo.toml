@@ -1,0 +1,14 @@
+[package]
+name = "sov-profiler"
+description = "Source profiler: dictionary-first schema relationship extraction (Maximo MAXRELATIONSHIP), then statistical discovery (arc42 Appendix C spike 3)"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+publish.workspace = true
+repository.workspace = true
+
+[dependencies]
+sov-sim.workspace = true
+
+[lints]
+workspace = true

@@ -1,0 +1,55 @@
+name: ci
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  rust:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions-rust-lang/setup-rust-toolchain@v1 # reads rust-toolchain.toml
+      - run: cargo xtask ci
+  binary:
+    # Builds the evaluation binary exactly as a release would, smoke-tests the packaged copy, and
+    # keeps the tarball, checksums and SBOM for download from the run page.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions-rust-lang/setup-rust-toolchain@v1
+      - run: cargo xtask dist
+      - uses: actions/upload-artifact@v4
+        with:
+          name: sov-evaluation-build
+          path: |
+            dist/*.tar.gz
+            dist/SHA256SUMS
+            dist/sbom.cdx.json
+  formal:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions-rust-lang/setup-rust-toolchain@v1
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+      - run: cargo xtask tools
+      - run: cargo xtask tlc
+      - name: Install Lean (version pinned in formal/lean/lean-toolchain)
+        run: |
+          curl -sSfL https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh | sh -s -- -y --default-toolchain "$(cat formal/lean/lean-toolchain)"
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+      - run: cargo xtask lean
+  benchmark:
+    # Needs network access (downloads Apache OFBiz at a pinned commit); fails below the quality gate.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions-rust-lang/setup-rust-toolchain@v1
+      - run: cargo xtask bench-fk

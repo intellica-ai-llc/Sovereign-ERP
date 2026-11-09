@@ -1,0 +1,40 @@
+# Virtual workspace. Layout follows rust-analyzer: every crate lives one level under crates/,
+# directory name == package name, project prefix `sov-` because Cargo's namespace is flat.
+# See docs/adr/eng-0002-repository-layout.md.
+[workspace]
+resolver = "2"
+members = ["crates/*", "xtask"]
+
+[workspace.package]
+version = "0.1.0" # internal crates; nothing is published (ADR eng-0002); the `sov` tool reports this version
+edition = "2021"
+rust-version = "1.99" # must equal the channel in rust-toolchain.toml (checked by `cargo xtask ci`)
+publish = false
+repository = "https://github.com/intellica-ai-llc/Sovereign-ERP"
+
+[workspace.dependencies]
+sov-sim = { path = "crates/sov-sim" }
+sov-period-controller = { path = "crates/sov-period-controller" }
+sov-ledger-port = { path = "crates/sov-ledger-port" }
+
+# Lint policy lives here and nowhere else; every crate opts in with `[lints] workspace = true`.
+[workspace.lints.rust]
+unsafe_code = "forbid"
+missing_debug_implementations = "warn"
+missing_docs = "warn"
+
+[workspace.lints.clippy]
+all = { level = "warn", priority = -1 }
+pedantic = { level = "warn", priority = -1 }
+unwrap_used = "warn"
+expect_used = "warn"
+panic = "warn"
+todo = "warn"
+unimplemented = "warn"
+dbg_macro = "warn"
+print_stdout = "warn"
+print_stderr = "warn"
+# `MemLedger` in `mem`, `check_invariants` in `invariants`: the repetition reads better at call sites.
+module_name_repetitions = "allow"
+# A style preference about test failure messages (newer clippy only); `assert!(x.is_empty())` reads clearly.
+assert_is_empty = "allow"

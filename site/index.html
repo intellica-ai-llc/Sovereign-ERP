@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Sovereign ERP: Pilot Portal</title>
+<style>
+:root{--bg:#fafaf8;--fg:#1b1d1f;--mut:#5d6368;--card:#fff;--line:#dcdcd6;--acc:#0b5c8f;--warn:#fff4d6;--warnl:#e3c46a;--code:#f0f0ec}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121416;--fg:#e8e9ea;--mut:#9aa1a6;--card:#1a1d20;--line:#2e3337;--acc:#6bb6e8;--warn:#2d2812;--warnl:#7a6a22;--code:#22262a}}
+:root[data-theme="dark"]{--bg:#121416;--fg:#e8e9ea;--mut:#9aa1a6;--card:#1a1d20;--line:#2e3337;--acc:#6bb6e8;--warn:#2d2812;--warnl:#7a6a22;--code:#22262a}
+*{box-sizing:border-box}
+html{scroll-padding-top:4.5rem}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+a{color:var(--acc)}
+header{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line);padding:.7rem 1rem;display:flex;flex-wrap:wrap;gap:.5rem 1.2rem;align-items:center}
+header strong{font-size:1.05rem}
+nav{display:flex;flex-wrap:wrap;gap:.2rem 1rem;font-size:.95rem}
+main{max-width:60rem;margin:0 auto;padding:1.2rem 1rem 3rem}
+section{margin:2.4rem 0}
+h1{font-size:1.8rem;margin:.2rem 0}
+h2{font-size:1.3rem;margin:0 0 .6rem;border-bottom:1px solid var(--line);padding-bottom:.3rem}
+h3{font-size:1.02rem;margin:1.1rem 0 .3rem}
+p,li{max-width:46rem}
+.lead{color:var(--mut);font-size:1.05rem}
+.banner{background:var(--warn);border:1px solid var(--warnl);border-radius:8px;padding:.7rem .9rem;margin:1rem 0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(14rem,1fr));gap:.8rem}
+.card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:.8rem .9rem}
+.card h3{margin-top:0}
+.scroll{overflow-x:auto;max-width:100%}
+table{border-collapse:collapse;width:100%;font-size:.93rem;background:var(--card)}
+th,td{border:1px solid var(--line);padding:.45rem .6rem;text-align:left;vertical-align:top}
+th{background:var(--code)}
+pre,code{font:.88rem ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:var(--code);border-radius:5px}
+code{padding:.08rem .3rem}
+pre{padding:.7rem .8rem;overflow-x:auto;max-width:100%}
+pre code{padding:0;background:none}
+.hash{word-break:break-all;font-size:.8rem}
+.muted{color:var(--mut)}
+footer{border-top:1px solid var(--line);padding:1.2rem 1rem;color:var(--mut);font-size:.9rem;text-align:center}
+</style>
+</head>
+<body>
+<header>
+  <strong>Sovereign ERP <span class="muted">Pilot Portal</span></strong>
+  <nav aria-label="Sections">
+    <a href="#downloads">Downloads</a><a href="#verify">Verify</a><a href="#license">Licence</a>
+    <a href="#docs">Documentation</a><a href="#support">Support</a><a href="#security">Security</a>
+  </nav>
+</header>
+<main>
+  <h1>Welcome, pilot partner</h1>
+  <p class="lead">Everything you need to install, license, run and get help with the Sovereign ERP pilot build, in one place.</p>
+  <div class="banner" id="banner"><strong>Pilot software.</strong> For evaluation under your signed pilot agreement only. Not for production use. Please keep download links and licence files private.</div>
+
+  <section id="downloads">
+    <h2>Downloads</h2>
+    <div id="releases"><p class="muted">Loading releases…</p></div>
+    <h3>System requirements</h3>
+    <p class="muted">Final requirements are published with the first pilot release. The planned baseline is below, so your infrastructure team can prepare.</p>
+    <div class="scroll"><table>
+      <tr><th>Item</th><th>Planned baseline</th></tr>
+      <tr><td>Operating system</td><td>64-bit Linux (x86-64), container or tarball install</td></tr>
+      <tr><td>Event store</td><td>PostgreSQL (supported versions listed in the release notes)</td></tr>
+      <tr><td>Source system access</td><td>A dedicated <strong>read-only</strong> database account, preferably on a reporting replica or restored backup rather than live production</td></tr>
+      <tr><td>Network</td><td>No outbound internet access required; the product makes no calls to us</td></tr>
+    </table></div>
+  </section>
+
+  <section id="verify">
+    <h2>Verify your download</h2>
+    <p>Check every file before you run it. Each release publishes a checksum, a signature and a software bill of materials (SBOM), plus build provenance linking the file to the exact source commit and build.</p>
+    <h3>1. Checksum</h3>
+    <pre><code>sha256sum -c SHA256SUMS --ignore-missing</code></pre>
+    <h3>2. Signature (Sigstore cosign, keyless)</h3>
+    <pre><code>cosign verify-blob \
+  --bundle FILE.sigstore.json \
+  --certificate-identity-regexp '^https://github\.com/intellica-ai-llc/Sovereign-ERP/\.github/workflows/release\.yml@refs/tags/v.+$' \
+  --certificate-oidc-issuer https://token.actions.githubusercontent.com \
+  FILE</code></pre>
+    <h3>3. Build provenance</h3>
+    <pre><code>gh attestation verify FILE --repo intellica-ai-llc/Sovereign-ERP</code></pre>
+    <p class="muted">If any check fails, do not install the file. Contact support and keep the file for analysis. The checksum applies to every build; signature and provenance checks apply once releases are signed (the first evaluation builds may carry the checksum and bill of materials only).</p>
+  </section>
+
+  <section id="license">
+    <h2>Licence</h2>
+    <p>The evaluation build needs <strong>no licence file</strong> and makes no network connections. It is provided under the evaluation terms in your pilot agreement. Offline-verified licence files (a signed file checked at start-up, with no activation server) are planned for a later release, and this page will describe them when they exist.</p>
+  </section>
+
+  <section id="docs">
+    <h2>Documentation</h2>
+    <p>The manual is organised by what you are trying to do.</p>
+    <div class="grid" id="docgrid">
+      <div class="card"><h3>Tutorial</h3><p>Your first ingestion, end to end, on a sample database. No customer data needed.</p></div>
+      <div class="card"><h3>How-to guides</h3><p>Create the read-only role, connect a source, install or renew a licence, upgrade, back up and restore, collect diagnostics.</p></div>
+      <div class="card"><h3>Reference</h3><p>Command line, configuration, API, error and licence codes, compatibility matrix.</p></div>
+      <div class="card"><h3>Explanation</h3><p>Architecture, data flow, what is read and what is stored, the security model, how equivalence is proven.</p></div>
+    </div>
+    <p class="muted" id="docnote"></p>
+    <h3>Release notes and known issues</h3>
+    <p class="muted">Published with each release and linked from its row in the downloads table.</p>
+  </section>
+
+  <section id="support">
+    <h2>Support</h2>
+    <p id="contact">Support contact details are provided in your pilot agreement.</p>
+    <h3>Severity and response targets</h3>
+    <div class="scroll"><table>
+      <tr><th>Severity</th><th>Meaning</th><th>First response target</th></tr>
+      <tr><td>1 Critical</td><td>Pilot environment unusable, or suspected data exposure</td><td class="sla">As set in your pilot agreement</td></tr>
+      <tr><td>2 High</td><td>Major function broken, no workaround</td><td class="sla">As set in your pilot agreement</td></tr>
+      <tr><td>3 Normal</td><td>Function impaired, workaround exists</td><td class="sla">As set in your pilot agreement</td></tr>
+      <tr><td>4 Low</td><td>Question, documentation or enhancement request</td><td class="sla">As set in your pilot agreement</td></tr>
+    </table></div>
+    <h3>What to include in a request</h3>
+    <ul>
+      <li>Product version (<code>./sov version</code>) and the digest line at the end of the report you ran.</li>
+      <li>What you expected and what happened, with exact error text and time.</li>
+      <li>The text or JSON report if you are comfortable sharing it. It contains table and column names, counts and a digest, but no row values (the audit report does print key values, so check it first).</li>
+    </ul>
+  </section>
+
+  <section id="security">
+    <h2>Security</h2>
+    <p>Report suspected vulnerabilities privately through the repository&rsquo;s private vulnerability reporting, or to the security contact in your agreement. See also the security and privacy statement included with every download. Please do not post them in public channels. Never email database credentials or licence files; use the secure channel your pilot contact provides.</p>
+  </section>
+</main>
+<footer>
+  <span id="legal">Sovereign ERP pilot build &middot; Intellica AI Inc.</span>
+</footer>
+<script>
+"use strict";
+// Edit this block when hosting. Empty values are shown as "provided in your agreement".
+var CONFIG = {
+  supportEmail: "",          // e.g. "pilot-support@your-domain"
+  supportHours: "",          // e.g. "Mon to Fri, 08:00 to 17:00 Trinidad and Tobago time (AST)"
+  docsBaseUrl: "",           // e.g. "/docs/" once the manual is hosted
+  releasesUrl: "releases.json"
+};
+
+function el(tag, text, attrs) {
+  var n = document.createElement(tag);
+  if (text != null) n.textContent = text;
+  if (attrs) Object.keys(attrs).forEach(function (k) { n.setAttribute(k, attrs[k]); });
+  return n;
+}
+function safeUrl(u) {
+  // Only same-site relative paths or https links are allowed; anything else is dropped.
+  if (typeof u !== "string") return null;
+  if (/^https:\/\//i.test(u)) return u;
+  if (/^[\w./-]+$/.test(u) && u.indexOf("..") === -1) return u;
+  return null;
+}
+function link(label, url) {
+  var u = safeUrl(url);
+  if (!u) return el("span", "n/a", { "class": "muted" });
+  var a = el("a", label, { href: u, rel: "noopener" });
+  return a;
+}
+function fmtSize(n) {
+  if (typeof n !== "number" || n <= 0) return "";
+  return (n / 1048576).toFixed(1) + " MB";
+}
+
+function renderReleases(data) {
+  var box = document.getElementById("releases");
+  box.textContent = "";
+  var rels = (data && Array.isArray(data.releases)) ? data.releases : [];
+  if (!rels.length) {
+    box.appendChild(el("p", "No pilot release has been published yet. You will be notified when the first build is available.", { "class": "muted" }));
+    return;
+  }
+  rels.forEach(function (r) {
+    var h = el("h3", "Version " + String(r.version || "?") + (r.date ? " (" + String(r.date) + ")" : ""));
+    box.appendChild(h);
+    if (r.notes) { var p = el("p"); p.appendChild(link("Release notes and known issues", r.notes)); box.appendChild(p); }
+    var wrap = el("div", null, { "class": "scroll" });
+    var t = el("table");
+    var head = el("tr");
+    ["File", "Platform", "Size", "SHA-256", "Verify"].forEach(function (c) { head.appendChild(el("th", c)); });
+    t.appendChild(head);
+    (Array.isArray(r.artifacts) ? r.artifacts : []).forEach(function (a) {
+      var row = el("tr");
+      var c1 = el("td"); c1.appendChild(link(String(a.name || "download"), a.url)); row.appendChild(c1);
+      row.appendChild(el("td", String(a.platform || "")));
+      row.appendChild(el("td", fmtSize(a.size)));
+      row.appendChild(el("td", String(a.sha256 || ""), { "class": "hash" }));
+      var c5 = el("td");
+      [["signature", a.signature], ["SBOM", a.sbom], ["provenance", a.provenance]].forEach(function (x, i) {
+        if (x[1]) { if (i) c5.appendChild(document.createTextNode(" · ")); c5.appendChild(link(x[0], x[1])); }
+      });
+      row.appendChild(c5);
+      t.appendChild(row);
+    });
+    wrap.appendChild(t);
+    box.appendChild(wrap);
+  });
+}
+
+function loadReleases() {
+  var box = document.getElementById("releases");
+  fetch(CONFIG.releasesUrl, { cache: "no-store" })
+    .then(function (r) { if (!r.ok) throw new Error("status " + r.status); return r.json(); })
+    .then(renderReleases)
+    .catch(function () {
+      box.textContent = "";
+      box.appendChild(el("p", "No pilot release has been published yet. You will be notified when the first build is available.", { "class": "muted" }));
+    });
+}
+
+function applyConfig() {
+  if (CONFIG.supportEmail && /^[^\s@<>"]+@[^\s@<>"]+$/.test(CONFIG.supportEmail)) {
+    var c = document.getElementById("contact");
+    c.textContent = "Email ";
+    c.appendChild(el("a", CONFIG.supportEmail, { href: "mailto:" + CONFIG.supportEmail }));
+    if (CONFIG.supportHours) c.appendChild(document.createTextNode(". Hours: " + CONFIG.supportHours + "."));
+    document.getElementById("licMail").setAttribute("href", "mailto:" + CONFIG.supportEmail);
+  }
+  var base = safeUrl(CONFIG.docsBaseUrl);
+  var note = document.getElementById("docnote");
+  if (base) {
+    var cards = document.querySelectorAll("#docgrid .card");
+    var paths = ["tutorial/", "how-to/", "reference/", "explanation/"];
+    cards.forEach(function (card, i) { card.appendChild(link("Open", base + paths[i])); });
+  } else {
+    note.textContent = "The manual is being finalised and will be published here with the first pilot release.";
+  }
+}
+
+applyConfig();
+loadReleases();
+</script>
+</body>
+</html>

@@ -1,0 +1,4 @@
+* text=auto eol=lf
+*.lean linguist-language=Lean
+*.tla linguist-language=TLA
+Cargo.lock -diff

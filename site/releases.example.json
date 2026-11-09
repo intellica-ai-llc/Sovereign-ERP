@@ -1,0 +1,23 @@
+{
+  "_comment": "EXAMPLE ONLY, with fake values. The release pipeline writes the real releases.json next to index.html.",
+  "schema": 1,
+  "releases": [
+    {
+      "version": "0.1.0-pilot.1",
+      "date": "2026-12-01",
+      "notes": "release-notes/0.1.0-pilot.1.html",
+      "artifacts": [
+        {
+          "name": "sov-0.1.0-pilot.1-x86_64-linux.tar.gz",
+          "platform": "Linux x86-64",
+          "size": 12582912,
+          "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+          "url": "files/sov-0.1.0-pilot.1-x86_64-linux.tar.gz",
+          "signature": "files/sov-0.1.0-pilot.1-x86_64-linux.tar.gz.sigstore.json",
+          "sbom": "files/sov-0.1.0-pilot.1.cdx.json",
+          "provenance": "files/sov-0.1.0-pilot.1.intoto.jsonl"
+        }
+      ]
+    }
+  ]
+}

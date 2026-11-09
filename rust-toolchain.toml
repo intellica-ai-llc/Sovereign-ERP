@@ -1,0 +1,6 @@
+# Reproducible builds: one exact toolchain for everyone, bumped deliberately in its own PR.
+# Keep `rust-version` in Cargo.toml in lockstep (cargo xtask ci checks this).
+[toolchain]
+channel = "1.99.1"
+components = ["rustfmt", "clippy"]
+profile = "minimal"

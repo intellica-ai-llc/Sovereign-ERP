@@ -1,0 +1,19 @@
+[package]
+name = "sov-ledger-port"
+description = "Ledger Port: engine-neutral contract, in-memory reference ledger, invariants, conformance suite and model checker (arc42 Appendix D)"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+publish.workspace = true
+repository.workspace = true
+
+[features]
+# Seeds known defects so tests can prove the invariants are able to fail. Test-only (see sov-period-controller).
+fault-injection = []
+
+[dev-dependencies]
+sov-ledger-port = { path = ".", features = ["fault-injection"] }
+sov-sim.workspace = true
+
+[lints]
+workspace = true
