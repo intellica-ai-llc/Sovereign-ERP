@@ -23,7 +23,7 @@ jobs:
           test "v$version" = "${GITHUB_REF_NAME}" || { echo "tag ${GITHUB_REF_NAME} != Cargo.toml version v$version"; exit 1; }
       - run: cargo xtask ci
       - run: cargo xtask dist
-      - uses: actions/attest-build-provenance@v2
+      - uses: actions/attest-build-provenance@v4
         with:
           subject-path: dist/*.tar.gz
       - uses: sigstore/cosign-installer@v3
